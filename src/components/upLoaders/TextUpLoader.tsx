@@ -53,7 +53,7 @@ const TextUpLoader: FC = () => {
             <label htmlFor="point">Point</label>
             <input type="number" name="point" onChange={handleChange}/>
             <label htmlFor="rank">Rank</label>
-            <input type="number" name="point" onChange={handleChange}/>
+            <input type="number" name="rank" onChange={handleChange}/>
             </Form.Field>
             <Button type="submit">Submit</Button>
           </Form>
