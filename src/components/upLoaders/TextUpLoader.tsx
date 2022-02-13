@@ -37,7 +37,7 @@ const TextUpLoader: FC = () => {
 
   return (
     <>
-      <h1>Text Uploader</h1>
+      <h1>Henkaku Membership Uploader</h1>
       <Segment.Group>
         <Segment>
           <Form onSubmit={handleSubmit}>

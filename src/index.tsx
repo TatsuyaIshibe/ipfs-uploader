@@ -14,7 +14,6 @@ const Root = () => {
       <Router>
         <Route exact path="/" component={Home} />
         <Route path="/text" component={TextPage} />
-        <Route path="/file" component={FilePage} />
       </Router>
     </>
   );
