@@ -18,14 +18,22 @@ const TextUpLoader: FC = () => {
     const parsedSVGDoc = domParser.parseFromString(henkakuBaseSVG, 'image/svg+xml');
     
     parsedSVGDoc.getElementById("jip_member_name")!.textContent = user.name
-    parsedSVGDoc.getElementById("jip_member_wallet")!.textContent = user.address
     parsedSVGDoc.getElementById("jip_published_date")!.textContent = new Date().toDateString();
     parsedSVGDoc.getElementById("jip_point")!.textContent = "$" + user.point + "henkaku"
     parsedSVGDoc.getElementById("jip_role")!.textContent = user.role
     parsedSVGDoc.getElementById("jip_rank")!.textContent = user.rank + "/100"
 
+    var walletAddress = user.address
+    if (user.address.lastIndexOf(".eth") == -1) {
+      var strHead  = user.address.slice( 0, 4);
+      var strFoot  = user.address.slice( -3 ); 
+      walletAddress = strHead + "..." + strFoot
+    }
+    parsedSVGDoc.getElementById("jip_member_wallet")!.textContent = walletAddress
+
     parsedSVGDoc.getElementById('profile_pic')!.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', user.profileUrl);
     const svg = new XMLSerializer().serializeToString(parsedSVGDoc)
+    console.log(walletAddress)
     const res = await getTextIpfsHash(svg);
     setResultHash(res);
     setEnd(true);
