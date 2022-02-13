@@ -42,7 +42,7 @@
       "last 1 safari version"
     ]
   },
-  "engines" : { 
-    "node" : ">=14.8.0"
+  "parserOptions": {
+    "warnOnUnsupportedTypeScriptVersion": false
   }
 }
