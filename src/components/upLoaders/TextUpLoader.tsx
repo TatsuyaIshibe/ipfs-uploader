@@ -8,7 +8,7 @@ const TextUpLoader: FC = () => {
   const [resultHash, setResultHash] = useState('');
   const [load, setLoad] = useState<boolean>(true);
   const [end, setEnd] = useState(false);
-  const [user, setUser] = useState({ name: "", address: "", point: "", rank: "", profileUrl: "", role: ""});
+  const [user, setUser] = useState({ name: "", address: "", point: "", profileUrl: "", role: ""});
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -16,24 +16,23 @@ const TextUpLoader: FC = () => {
 
     const domParser = new DOMParser();
     const parsedSVGDoc = domParser.parseFromString(henkakuBaseSVG, 'image/svg+xml');
-    
-    parsedSVGDoc.getElementById("jip_member_name")!.textContent = user.name
-    parsedSVGDoc.getElementById("jip_published_date")!.textContent = new Date().toDateString();
-    parsedSVGDoc.getElementById("jip_point")!.textContent = "$" + user.point + "henkaku"
-    parsedSVGDoc.getElementById("jip_role")!.textContent = user.role
-    parsedSVGDoc.getElementById("jip_rank")!.textContent = user.rank + "/100"
+
+    parsedSVGDoc.getElementById("henkaku_member_name")!.textContent = user.name
+    const jstNow = new Date(Date.now() + ((new Date().getTimezoneOffset() + (9 * 60)) * 60 * 1000));
+    parsedSVGDoc.getElementById("henkaku_published_date")!.textContent = jstNow.getFullYear() + "." + ("00" + (jstNow.getMonth()+1)).slice(-2) + "." + ("00" + jstNow.getDate()).slice(-2);
+    parsedSVGDoc.getElementById("henkaku_point")!.textContent = "$" + user.point + "Henkaku"
+    parsedSVGDoc.getElementById("henkaku_role")!.textContent = user.role
+    parsedSVGDoc.getElementById('henkaku_profile_pic')!.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', user.profileUrl);
 
     var walletAddress = user.address
     if (user.address.lastIndexOf(".eth") == -1) {
       var strHead  = user.address.slice( 0, 4);
-      var strFoot  = user.address.slice( -3 ); 
+      var strFoot  = user.address.slice( -3 );
       walletAddress = strHead + "..." + strFoot
     }
-    parsedSVGDoc.getElementById("jip_member_wallet")!.textContent = walletAddress
+    parsedSVGDoc.getElementById("henkaku_member_wallet")!.textContent = walletAddress
 
-    parsedSVGDoc.getElementById('profile_pic')!.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', user.profileUrl);
     const svg = new XMLSerializer().serializeToString(parsedSVGDoc)
-    console.log(walletAddress)
     const res = await getTextIpfsHash(svg);
     setResultHash(res);
     setEnd(true);
@@ -60,8 +59,6 @@ const TextUpLoader: FC = () => {
             <input type="text" name="role" onChange={handleChange} />
             <label htmlFor="point">Point</label>
             <input type="number" name="point" onChange={handleChange}/>
-            <label htmlFor="rank">Rank</label>
-            <input type="number" name="rank" onChange={handleChange}/>
             </Form.Field>
             <Button type="submit">Submit</Button>
           </Form>
